@@ -1,0 +1,42 @@
+[
+    {
+      "id": 1,
+      "title": "Como usar el seguro?",
+      "description": "Descripción de la primera novedad.",
+      "image": "segurofinal.png",
+      "date": "2023-10-01",
+      "author": "Consejo Directivo"
+    },
+    {
+      "id": 2,
+      "title": "Estado de la Torre!",
+      "description": "Descripción de la segunda novedad.",
+      "image": "Murofinal.png",
+      "date": "2023-10-05",
+      "author": "Consejo Directivo"
+    },
+    {
+      "id": 3,
+      "title": "Cped y La escalada en roca",
+      "description": "Descripción de la tercera novedad.",
+      "image": "SalidaFinal.jpg",
+      "date": "2023-10-10",
+      "author": "Consejo Directivo"
+    },
+    {
+      "id": 4,
+      "title": "Novedad 4",
+      "description": "Descripción de la cuarta novedad.",
+      "image": "4.png",
+      "date": "2023-10-15",
+      "author": "Admin"
+    },
+    {
+      "id": 5,
+      "title": "Novedad 5",
+      "description": "Descripción de la quinta novedad.",
+      "image": "5.png",
+      "date": "2023-10-20",
+      "author": "Admin"
+    }
+  ]
