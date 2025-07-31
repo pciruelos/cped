@@ -1,28 +1,12 @@
 <template>
   <div>
-    <!-- Price Box Section -->
-    <section class="py-20 bg-gray-100">
+    <!-- Member Section -->
+    <section class="pt-20 bg-gray-100">
       <div class="max-w-6xl mx-auto px-4">
-        <h1 class="text-4xl font-bold text-center mb-8">Convertirse En Socio</h1>
-        <div class="bg-white shadow-lg rounded-lg p-6 text-center max-w-2xl mx-auto">
-          <h3 class="text-2xl font-bold mb-4">Plan Estándar</h3>
-          <p class="text-gray-700 mb-4">
-            Ideal para aquellos que buscan beneficios exclusivos.
-          </p>
-          <p class="text-4xl font-bold mb-4">$25/mes</p>
-          <ul class="text-left mb-6">
-            <li class="text-gray-700 mb-2">Descuentos en eventos</li>
-            <li class="text-gray-700 mb-2">Seguro de vida incluido</li>
-            <li class="text-gray-700 mb-2">Acceso a la comunidad</li>
-          </ul>
-          <button class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600">
-            Elegir Plan
-          </button>
-        </div>
-      </div>
+        <h1 class="text-4xl font-bold text-center">Convertirse En Socio</h1>
 
-    <!-- Why Become a Member Section -->
-     <div class="py-10">
+        <!-- Why Become a Member Section -->
+     <div class="py-5">
        <div class="max-w-6xl mx-auto px-4">
          <h2 class="text-3xl font-bold text-center mb-8">¿Por Qué Ser Miembro?</h2>
          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -57,22 +41,66 @@
           </div>
         </div>
       </div>
+        
+      </div>
+    </section>
+    <!-- Price Box Section -->
+    <section class="py-5 bg-primary">
+      <div class="bg-secondary text-white shadow-lg rounded-lg p-6 text-center max-w-2xl mx-auto">
+          <h3 class="text-2xl font-bold mb-4">Socio Activo</h3>
+          <p class="text-gray-700 mb-4 text-white">
+            Ideal para aquellos que buscan beneficios y formar parte de la comunidad escaladora puntana.
+          </p>
+          <p class="text-4xl font-bold mb-4 text-white">$6000/mes</p>
+          <ul class="text-left mb-6">
+            <li class="text-gray-700 mb-2 text-white">✓ Descuentos en eventos</li>
+            <li class="text-gray-700 mb-2 text-white">✓ Seguro de vida incluido</li>
+            <li class="text-gray-700 mb-2 text-white">✓ Descuentos en Equipamiento</li>
+            <li class="text-gray-700 mb-2 text-white">✓ Descuentos en Resolados</li>
+            <li class="text-gray-700 mb-2 text-white">✓ Beneficios con otras asociaciones</li>
+            <li class="text-gray-700 mb-2 text-white">✓ Acceso a la comunidad</li>
+            <li class="text-gray-700 mb-2 text-white">✓ Acceso al muro libre</li>
+            <li class="text-gray-700 mb-2 text-white">✓ Acceso a todas las instalaciones</li>
+          </ul>
+          <button class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600">
+            Elegir Plan
+          </button>
+        </div>
     </section>
 
     <!-- Muro Libre Section -->
+    <section class="py-20 bg-gray-100">
+      <div class="max-w-6xl mx-auto px-4">
+
+        <div class="bg-white shadow-lg rounded-lg p-6 text-center max-w-2xl mx-auto">
+          <h3 class="text-2xl font-bold mb-4">Plan Muro Libre por 30 dias</h3>
+          <p class="text-gray-700 mb-4">
+            ideal para aquellos que no quieren comprometerse con la asociacion y pagos mensuales
+          </p>
+          <p class="text-4xl font-bold mb-4">$8000 /30 dias</p>
+          <ul class="text-left mb-6">
+            <li class="text-gray-700 mb-2">Muro libre</li>
+            <li class="text-red-500 mb-2">-no incluye segurto de vida que es un requisito excluyente para usar el muro-</li>
+          </ul>
+          <button class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600">
+            Elegir Plan
+          </button>
+        </div>
+      </div>
+    </section>
+    <!-- pase por dia Section -->
     <section class="py-20 bg-gray-0">
       <div class="max-w-6xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center mb-8">Muro Libre</h2>
+
         <div class="bg-white shadow-lg rounded-lg p-6 text-center max-w-2xl mx-auto">
-          <h3 class="text-2xl font-bold mb-4">Plan Muro Libre</h3>
+          <h3 class="text-2xl font-bold mb-4">Plan Pase por dia</h3>
           <p class="text-gray-700 mb-4">
-            Acceso ilimitado a todas las funciones de Muro Libre.
+            eventualidades
           </p>
-          <p class="text-4xl font-bold mb-4">$15/mes</p>
+          <p class="text-4xl font-bold mb-4">$3000</p>
           <ul class="text-left mb-6">
-            <li class="text-gray-700 mb-2">Publicaciones ilimitadas</li>
-            <li class="text-gray-700 mb-2">Acceso a herramientas avanzadas</li>
-            <li class="text-gray-700 mb-2">Soporte prioritario</li>
+            <li class="text-gray-700 mb-2">Acceso al muro durante todo el dia</li>
+            <li class="text-red-500 mb-2">-no incluye segurto de vida que es un requisito excluyente para usar el muro-</li>
           </ul>
           <button class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600">
             Elegir Plan

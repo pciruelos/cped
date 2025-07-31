@@ -5,15 +5,17 @@
       "description": "Descripción de la primera novedad.",
       "image": "segurofinal.png",
       "date": "2023-10-01",
-      "author": "Consejo Directivo"
+      "author": "Consejo Directivo",
+      "featured": true
     },
     {
       "id": 2,
       "title": "Estado de la Torre!",
       "description": "Descripción de la segunda novedad.",
-      "image": "Murofinal.png",
+      "image": "torre.png",
       "date": "2023-10-05",
-      "author": "Consejo Directivo"
+      "author": "Consejo Directivo",
+      "featured": true
     },
     {
       "id": 3,
@@ -21,15 +23,17 @@
       "description": "Descripción de la tercera novedad.",
       "image": "SalidaFinal.jpg",
       "date": "2023-10-10",
-      "author": "Consejo Directivo"
+      "author": "Consejo Directivo",
+      "featured": false
     },
     {
       "id": 4,
-      "title": "Novedad 4",
-      "description": "Descripción de la cuarta novedad.",
-      "image": "4.png",
+      "title": "Descuentos en BEAL!",
+      "description": "Accede a importantes descuentos por ser socio!",
+      "image": "descuentos.jpeg",
       "date": "2023-10-15",
-      "author": "Admin"
+      "author": "Admin",
+      "featured": true
     },
     {
       "id": 5,
@@ -37,6 +41,7 @@
       "description": "Descripción de la quinta novedad.",
       "image": "5.png",
       "date": "2023-10-20",
-      "author": "Admin"
+      "author": "Admin",
+      "featured": false
     }
   ]
