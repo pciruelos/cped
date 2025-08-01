@@ -18,40 +18,51 @@
     </div>
 
     <!-- Posteos destacados -->
-    <div v-if="filteredFeaturedPosts.length > 0" class="max-w-6xl mx-auto px-4 mb-2">
+    <div v-if="displayedFeaturedPosts.length > 0" class="max-w-6xl mx-auto px-4 mb-2">
       <h2 class="text-3xl font-bold text-center mb-4 text-blue-600 text-primary">Destacados</h2>
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-      <div v-for="post in filteredFeaturedPosts" :key="'featured-' + post.id" class="bg-blue-50 shadow-lg rounded-lg overflow-hidden border border-blue-300">
-        <img :src="post.image" :alt="post.title" class="w-full h-48 object-cover" />
-        <div class="p-6">
-          <h3 class="text-xl font-bold mb-2 font-secondary text-primary">{{ post.title }}</h3>
-          <p class="text-gray-700 mb-4">{{ post.description }}</p>
-          <div class="text-sm text-gray-600 mb-4">
-            <span>{{ formatDate(post.created_at) }}</span> · <span>{{ post.author }}</span>
+        <div v-for="post in displayedFeaturedPosts" :key="'featured-' + post.id" class="bg-blue-50 shadow-lg rounded-lg overflow-hidden border border-blue-300">
+          <img :src="post.image" :alt="post.title" class="w-full h-48 object-cover" />
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2 font-secondary text-primary">{{ post.title }}</h3>
+            <p class="text-gray-700 mb-4">{{ post.description }}</p>
+            <div class="text-sm text-gray-600 mb-4">
+              <span>{{ formatDate(post.created_at) }}</span> · <span>{{ post.author }}</span>
+            </div>
+            <router-link :to="`/blog/${post.id}`" class="text-blue-500 hover:underline">Leer Más</router-link>
           </div>
-          <router-link :to="`/blog/${post.id}`" class="text-blue-500 hover:underline">Leer Más</router-link>
         </div>
       </div>
+      
+      <!-- Botón para cargar todos los destacados -->
+      <div v-if="!showAllFeatured && filteredFeaturedPosts.length > 4" class="text-center mt-6">
+        <button 
+          @click="showAllFeatured = true"
+          class="text-primary hover:underline cursor-pointer"
+        >
+          Cargar todos los destacados
+        </button>
+      </div>
     </div>
-  </div>
 
     <!-- Resto de los posteos -->
     <div v-if="filteredOtherPosts.length > 0" class="max-w-6xl mx-auto px-4 mb-6">
       <h2 class="text-3xl font-bold text-center mb-4 text-gray-700 text-primary">Posts</h2>
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-      <div v-for="post in filteredOtherPosts" :key="'normal-' + post.id" class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <img :src="post.image" :alt="post.title" class="w-full h-48 object-cover" />
-        <div class="p-6">
-          <h3 class="text-xl font-bold mb-2 font-secondary text-primary">{{ post.title }}</h3>
-          <p class="text-gray-700 mb-4">{{ post.description }}</p>
-          <div class="text-sm text-gray-600 mb-4">
-            <span>{{ formatDate(post.created_at) }}</span> · <span>{{ post.author }}</span>
+        <div v-for="post in filteredOtherPosts" :key="'normal-' + post.id" class="bg-white shadow-lg rounded-lg overflow-hidden">
+          <img :src="post.image" :alt="post.title" class="w-full h-48 object-cover" />
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2 font-secondary text-primary">{{ post.title }}</h3>
+            <p class="text-gray-700 mb-4">{{ post.description }}</p>
+            <div class="text-sm text-gray-600 mb-4">
+              <span>{{ formatDate(post.created_at) }}</span> · <span>{{ post.author }}</span>
+            </div>
+            <router-link :to="`/blog/${post.id}`" class="text-blue-500 hover:underline">Leer Más</router-link>
           </div>
-          <router-link :to="`/blog/${post.id}`" class="text-blue-500 hover:underline">Leer Más</router-link>
         </div>
       </div>
     </div>
-  </div>
+
     <!-- Mensaje cuando no hay resultados -->
     <div v-if="searchQuery && filteredFeaturedPosts.length === 0 && filteredOtherPosts.length === 0" class="max-w-6xl mx-auto px-4 text-center py-12">
       <p class="text-gray-500 text-lg">No se encontraron resultados para "{{ searchQuery }}"</p>
@@ -66,6 +77,7 @@ import { supabase } from '../data/supabase'
 const featuredPosts = ref([])
 const otherPosts = ref([])
 const searchQuery = ref('')
+const showAllFeatured = ref(false)
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr)
@@ -81,6 +93,15 @@ const filteredFeaturedPosts = computed(() => {
     post.title.toLowerCase().includes(query) || 
     post.description.toLowerCase().includes(query)
   )
+})
+
+// Computed property para mostrar solo los primeros 4 destacados o todos
+const displayedFeaturedPosts = computed(() => {
+  const filtered = filteredFeaturedPosts.value
+  if (showAllFeatured.value || searchQuery.value) {
+    return filtered
+  }
+  return filtered.slice(0, 4)
 })
 
 const filteredOtherPosts = computed(() => {
