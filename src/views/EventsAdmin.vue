@@ -1,4 +1,4 @@
-<!-- src/views/EventsAdminView.vue -->
+<!-- EventsAdminView -->
 <template>
     <section class="min-h-screen bg-[#F4F4F4] py-8 px-4">
       <div class="max-w-6xl mx-auto">

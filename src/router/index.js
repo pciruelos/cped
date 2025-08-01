@@ -4,7 +4,7 @@ import { useAuthStore } from '../stores/auth'
 //componentes
 import Home from '../views/Home.vue'
 import About from '../views/About.vue'
-import News from '../views/News.vue'
+import BlogView from '../views/BlogView.vue'
 import Partners from '../views/Partners.vue'
 import Contact from '../views/Contact.vue'
 import PostDetail from '../views/PostDetail.vue'
@@ -20,10 +20,10 @@ import SociosList from '../views/SociosList.vue'
 const routes = [
   { path: '/', component: Home },
   { path: '/about', component: About },
-  { path: '/news', component: News },
+  { path: '/blog', component: BlogView },
   { path: '/partners', component: Partners },
   { path: '/contact', component: Contact },
-  { path: '/news/:id', component: PostDetail },
+  { path: '/blog/:id', component: PostDetail },
   { path: '/socios-list', component: SociosList },
   { path: '/comunidad', component: Comunidad },
   { path: '/gracias', component: GraciasView },

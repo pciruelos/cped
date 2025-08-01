@@ -29,7 +29,7 @@
         <div class="hidden md:flex space-x-4 items-center">
           <router-link to="/" class="text-gray-800 hover:text-blue-500 font-first">Inicio</router-link>
           <router-link to="/about" class="text-gray-800 hover:text-blue-500 font-first">Acerca</router-link>
-          <router-link to="/news" class="text-gray-800 hover:text-blue-500 font-first">Blog y Novedades</router-link>
+          <router-link to="/blog" class="text-gray-800 hover:text-blue-500 font-first">Blog y Novedades</router-link>
           <router-link to="/partners" class="text-gray-800 hover:text-blue-500 font-first">Socios y Muro</router-link>
           <router-link to="/clases" class="text-gray-800 hover:text-blue-500 font-first">Clases y Horarios</router-link>
           <router-link to="/comunidad" class="text-gray-800 hover:text-blue-500 font-first">Comunidad</router-link>
@@ -65,7 +65,7 @@
       <div v-if="isMenuOpen" @click="handleMenuClick" class="md:hidden">
         <router-link to="/" class="block py-4 text-gray-800 hover:text-blue-500 font-first text-xl">Inicio</router-link>
         <router-link to="/about" class="block py-4 text-gray-800 hover:text-blue-500 font-first text-xl">Acerca</router-link>
-        <router-link to="/news" class="block py-4 text-gray-800 hover:text-blue-500 font-first text-xl">Blog y Novedades</router-link>
+        <router-link to="/blog" class="block py-4 text-gray-800 hover:text-blue-500 font-first text-xl">Blog y Novedades</router-link>
         <router-link to="/partners" class="block py-4 text-gray-800 hover:text-blue-500 font-first text-xl">Socios y Muro</router-link>
         <router-link to="/clases" class="block py-4 text-gray-800 hover:text-blue-500 font-first text-xl">Clases y Horarios</router-link>
         <router-link to="/comunidad" class="block py-4 text-gray-800 hover:text-blue-500 font-first text-xl">Comunidad</router-link>

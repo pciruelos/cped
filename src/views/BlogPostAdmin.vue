@@ -1,147 +1,223 @@
+<!-- BlogAdminView.vue -->
 <template>
-    <section class="min-h-screen bg-gray-100 py-10 px-4">
-      <div class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow">
-        <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Cargar Nueva Novedad</h1>
-  
-        <form @submit.prevent="handleSubmit" class="space-y-4">
-          <div>
-            <label class="block mb-1 font-semibold">Título</label>
-            <input v-model="title" required class="w-full px-4 py-2 border rounded-lg" />
-          </div>
-  
-          <div>
-            <label class="block mb-1 font-semibold">Descripción</label>
-            <input v-model="description" required class="w-full px-4 py-2 border rounded-lg" />
-          </div>
-  
-          <div>
-            <label class="block mb-1 font-semibold">Imagen</label>
-            <input type="file" accept="image/*" @change="handleFileUpload" class="w-full" />
-            <div v-if="uploading" class="text-sm text-gray-500 mt-1">Subiendo imagen...</div>
-            <div v-if="imageUrl" class="text-sm text-green-600 mt-1">Imagen subida correctamente ✅</div>
-          </div>
-  
-          <div>
-            <label class="block mb-1 font-semibold">Autor</label>
-            <input v-model="author" required class="w-full px-4 py-2 border rounded-lg" />
-          </div>
-  
-          <div>
-            <label class="block mb-1 font-semibold">Contenido</label>
-            <textarea v-model="content" rows="5" required class="w-full px-4 py-2 border rounded-lg"></textarea>
-          </div>
-  
-          <div class="flex items-center gap-2">
-            <input type="checkbox" id="featured" v-model="featured" />
-            <label for="featured" class="text-sm">Destacar este post</label>
-          </div>
-  
-          <button
-            type="submit"
-            class="bg-[#EB5032] text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-600 transition"
-            :disabled="uploading"
-          >
-            Publicar
-          </button>
-  
-          <p v-if="errorMsg" class="text-red-600 text-sm text-center mt-2">{{ errorMsg }}</p>
-          <p v-if="successMsg" class="text-green-600 text-sm text-center mt-2">{{ successMsg }}</p>
-        </form>
-      </div>
-    </section>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue'
-  import { useRouter } from 'vue-router'
-  import { supabase } from '../data/supabase'
-  
-  const title = ref('')
-  const description = ref('')
-  const author = ref('')
-  const content = ref('')
-  const featured = ref(false)
-  const imageUrl = ref('')
-  const uploading = ref(false)
-  
-  const errorMsg = ref('')
-  const successMsg = ref('')
-  const router = useRouter()
-  
-  const handleFileUpload = async (event) => {
-    const file = event.target.files[0]
-    if (!file) return
+  <section class="min-h-screen bg-[#F4F4F4] py-8 px-4">
+    <div class="max-w-6xl mx-auto">
+      <!-- Header -->
+      <BlogAdminHeader 
+        @nuevo-post="abrirFormulario" 
+      />
 
-    const { data: { session } } = await supabase.auth.getSession()
+      <!-- Loading -->
+      <div v-if="loading" class="bg-white p-8 rounded-xl shadow-lg text-center">
+        <p class="text-gray-600">Cargando posts...</p>
+      </div>
+
+      <!-- Error -->
+      <div v-else-if="error" class="bg-red-50 border border-red-200 p-6 rounded-xl">
+        <p class="text-red-600">Error: {{ error }}</p>
+        <button
+          @click="cargarPosts"
+          class="mt-3 bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition"
+        >
+          Reintentar
+        </button>
+      </div>
+
+      <!-- Contenido principal -->
+      <div v-else class="space-y-8">
+        <!-- Panel de estadísticas -->
+        <BlogStatsPanel 
+          :total="posts.length"
+          :destacados="postsDestacados"
+          :importantes="postsImportantes"
+        />
+
+        <!-- Filtros -->
+        <BlogFilterBar 
+          v-model:busqueda="filtros.busqueda"
+        />
+
+        <!-- Lista de posts -->
+        <BlogPostsList 
+          :posts="postsFiltrados"
+          @editar="editarPost"
+          @eliminar="confirmarEliminar"
+        />
+      </div>
+
+      <!-- Modal de formulario -->
+      <BlogPostForm
+        v-if="mostrarFormulario"
+        :post="postEditando"
+        :guardando="guardando"
+        @guardar="guardarPost"
+        @cerrar="cerrarFormulario"
+      />
+
+      <!-- Modal de confirmación para eliminar -->
+      <BlogDeleteModal
+        v-if="postAEliminar"
+        :post="postAEliminar"
+        @confirmar="eliminarPost"
+        @cancelar="postAEliminar = null"
+      />
+    </div>
+  </section>
+</template>
+
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { supabase } from '../data/supabase'
+import BlogAdminHeader from '../components/admin/BlogAdminHeader.vue'
+import BlogStatsPanel from '../components/admin/BlogStatsPanel.vue'
+import BlogFilterBar from '../components/admin/BlogFilterBar.vue'
+import BlogPostsList from '../components/admin/BlogPostsList.vue'
+import BlogPostForm from '../components/admin/BlogPostForm.vue'
+import BlogDeleteModal from '../components/admin/BlogDeleteModal.vue'
+
+const router = useRouter()
+
+// Estados principales
+const posts = ref([])
+const loading = ref(true)
+const error = ref(null)
+const mostrarFormulario = ref(false)
+const postEditando = ref(null)
+const postAEliminar = ref(null)
+const guardando = ref(false)
+
+// Filtros
+const filtros = ref({
+  busqueda: ''
+})
+
+// Computeds para estadísticas
+const postsDestacados = computed(() => {
+  return posts.value.filter(post => post.featured).length
+})
+
+const postsImportantes = computed(() => {
+  return posts.value.filter(post => post.important).length
+})
+
+// Posts filtrados
+const postsFiltrados = computed(() => {
+  let resultado = posts.value
+
+  if (filtros.value.busqueda) {
+    const termino = filtros.value.busqueda.toLowerCase()
+    resultado = resultado.filter(post =>
+      post.title.toLowerCase().includes(termino) ||
+      post.description.toLowerCase().includes(termino)
+    )
+  }
+
+  return resultado
+})
+
+// Funciones principales
+const cargarPosts = async () => {
+  try {
+    loading.value = true
+    error.value = null
+    
+    const { data, error: fetchError } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .order('created_at', { ascending: false })
+
+    if (fetchError) throw fetchError
+
+    posts.value = data || []
+  } catch (err) {
+    error.value = err.message
+  } finally {
+    loading.value = false
+  }
+}
+
+const abrirFormulario = () => {
+  postEditando.value = null
+  mostrarFormulario.value = true
+}
+
+const editarPost = (post) => {
+  postEditando.value = post
+  mostrarFormulario.value = true
+}
+
+const cerrarFormulario = () => {
+  mostrarFormulario.value = false
+  postEditando.value = null
+}
+
+const guardarPost = async (datosPost) => {
+  try {
+    guardando.value = true
+
+    if (postEditando.value) {
+      // Actualizar post existente
+      const { error: updateError } = await supabase
+        .from('blog_posts')
+        .update(datosPost)
+        .eq('id', postEditando.value.id)
+
+      if (updateError) throw updateError
+    } else {
+      // Crear nuevo post
+      const { data: { session } } = await supabase.auth.getSession()
+      
+      const { error: insertError } = await supabase
+        .from('blog_posts')
+        .insert([{
+          ...datosPost,
+          user_id: session.user.id
+        }])
+
+      if (insertError) throw insertError
+    }
+
+    await cargarPosts()
+    cerrarFormulario()
+
+  } catch (err) {
+    error.value = err.message
+  } finally {
+    guardando.value = false
+  }
+}
+
+const confirmarEliminar = (post) => {
+  postAEliminar.value = post
+}
+
+const eliminarPost = async () => {
+  try {
+    const { error: deleteError } = await supabase
+      .from('blog_posts')
+      .delete()
+      .eq('id', postAEliminar.value.id)
+
+    if (deleteError) throw deleteError
+
+    await cargarPosts()
+    postAEliminar.value = null
+
+  } catch (err) {
+    error.value = err.message
+  }
+}
+
+// Verificar autenticación y cargar datos
+onMounted(async () => {
+  const { data: { session } } = await supabase.auth.getSession()
+  
   if (!session) {
-    errorMsg.value = 'Debes estar logueado para subir imágenes'
+    router.push('/login')
     return
   }
   
-    uploading.value = true
-  
-    // Generar nombre más simple y seguro
-    const fileExtension = file.name.split('.').pop()
-    const fileName = `${Date.now()}.${fileExtension}`
-  
-    const { error: uploadError } = await supabase.storage
-      .from('blog-images')
-      .upload(fileName, file)
-  
-    if (uploadError) {
-      errorMsg.value = 'Error al subir la imagen'
-      uploading.value = false
-      return
-    }
-  
-    const { data } = supabase.storage
-      .from('blog-images')
-      .getPublicUrl(fileName)
-  
-    imageUrl.value = data.publicUrl
-    uploading.value = false
-  }
-  
-  const handleSubmit = async () => {
-    errorMsg.value = ''
-    successMsg.value = ''
-  
-    if (!imageUrl.value) {
-      errorMsg.value = 'Debes subir una imagen antes de publicar'
-      return
-    }
-  
-    const {
-      data: { session }
-    } = await supabase.auth.getSession()
-  
-    if (!session) {
-      errorMsg.value = 'No estás logueado'
-      return
-    }
-  
-    const { user } = session
-  
-    const { error } = await supabase.from('blog_posts').insert([
-      {
-        title: title.value,
-        description: description.value,
-        image: imageUrl.value,
-        author: author.value,
-        content: content.value,
-        featured: featured.value,
-        user_id: user.id
-      }
-    ])
-  
-    if (error) {
-      errorMsg.value = 'Error al guardar el post'
-    } else {
-      successMsg.value = 'Post guardado correctamente'
-      setTimeout(() => {
-        router.push('/news')
-      }, 500)
-    }
-  }
-  </script>
-  
+  await cargarPosts()
+})
+</script>
