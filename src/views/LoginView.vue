@@ -1,5 +1,5 @@
 <template>
-  <section class="min-h-screen flex items-center justify-center bg-[#0F2332] px-4">
+  <section class="min-h-[calc(100vh-348px)] flex items-center justify-center bg-[#0F2332] px-4">
     <form @submit.prevent="handleLogin" class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
       <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">Iniciar Sesión</h1>
 
